@@ -12,7 +12,7 @@ train = pd.read_csv('./train_dataset.csv')
 test = pd.read_csv('./test_dataset.csv')
 sub = pd.read_csv('./submission.csv')
 
-logging.info("´òÓ¡Íê±Ï")
+logging.info("æ­£åœ¨æ‰§è¡Œ")
 data = train.copy()
 data['rating'] = 1
 data.head(5)
@@ -41,7 +41,7 @@ for user, items in trainSet.items():   # item:{movieID: rating}
 
 item_count = len(item_popular)
 
-# ÏÂÃæ½¨Á¢itemÏàËÆ¾ØÕó
+# ä¸‹é¢å»ºç«‹itemç›¸ä¼¼çŸ©é˜µ
 
 item_sim_matrix = {}
 for user, items in trainSet.items():
@@ -51,9 +51,9 @@ for user, items in trainSet.items():
                 continue
             item_sim_matrix.setdefault(m1, {})
             item_sim_matrix[m1].setdefault(m2, 0)
-            item_sim_matrix[m1][m2] += 1     # ÓàÏÒÏàËÆ¶È
+            item_sim_matrix[m1][m2] += 1     # ä½™å¼¦ç›¸ä¼¼åº¦
 
-# ¼ÆËãÊé¼®Ö®¼äµÄÏàËÆĞÔ
+# è®¡ç®—ä¹¦ç±ä¹‹é—´çš„ç›¸ä¼¼æ€§
 for m1, related_items in item_sim_matrix.items():
     for m2, count in related_items.items():
 
@@ -62,17 +62,17 @@ for m1, related_items in item_sim_matrix.items():
         else:
             item_sim_matrix[m1][m2] = count / math.sqrt(item_popular[m1] * item_popular[m2])
 user_lst = test['user_id'].tolist()
-# ÕÒµ½×îÏàËÆµÄK±¾Êé£¬ ×îÖÕÍÆ¼ö¸øÓÃ»§
+# æ‰¾åˆ°æœ€ç›¸ä¼¼çš„Kæœ¬ä¹¦ï¼Œ æœ€ç»ˆæ¨èç»™ç”¨æˆ·
 k = 208
 n = 10
 result = []
 for user in user_lst:
     rank = {}
-    watched_items = trainSet[user]  # ÕÒ³öÄ¿±êÓÃ»§¿´¹ıµÄÊé¼®
+    watched_items = trainSet[user]  # æ‰¾å‡ºç›®æ ‡ç”¨æˆ·çœ‹è¿‡çš„ä¹¦ç±
 
     for item, rating in watched_items.items():
         for related_item, w in sorted(item_sim_matrix[item].items(), key=itemgetter(1), reverse=True)[:k]:
-            # Èô¸ÃÎïÆ·ÓÃ»§¿´¹ıÔò²»ÍÆ¼ö
+            # è‹¥è¯¥ç‰©å“ç”¨æˆ·çœ‹è¿‡åˆ™ä¸æ¨è
             if related_item in watched_items:
                 continue
 
@@ -88,4 +88,4 @@ for i in result:
 sub['item_id'] = r
 sub
 sub.to_csv('./book.csv')
-print("ÔËĞĞÖÕÓÚ½áÊøÀ²")
+print("è¿è¡Œç»ˆäºç»“æŸå•¦")
